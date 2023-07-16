@@ -43,7 +43,11 @@ def get_guests():
 def get_reviews():
     con = db.connectdb()
     cursor = con.cursor()
-    cursor.execute("SELECT * FROM reviews")
+    cursor.execute("""
+                    SELECT reviews.*, users.name AS user_name
+                    FROM reviews
+                    JOIN users ON reviews.id_user = users.id;
+                """)
     myreviews = cursor.fetchall()
     reviews_array = []
     reviews_col_Names = [column[0] for column in cursor.description]
