@@ -66,7 +66,7 @@ def create_guest(data):
     lastname = data["lastname"]
     email = data["email"]
     
-    insert_query = 'INSERT INTO guests (name, lastname, email) VALUES (%s, %s);'
+    insert_query = 'INSERT INTO guests (name, lastname, email) VALUES (%s, %s, %s);'
     cursor.execute(insert_query, (name, lastname, email))
     con.commit()
     con.close()
@@ -78,7 +78,14 @@ def create_sheet(data):
     con = db.connectdb()
     cursor = con.cursor()
     name_one = data["name_one"]
-    insert_query = 'INSERT INTO sheets (name) VALUES (%s);'
-    cursor.execute(insert_query, (name_one))
+    lastname_one = data["lastname_one"]
+    name_two = data["name_two"]
+    lastname_two = data["lastname_two"]
+    event_location = data["event_location"]
+    event_date = data["event_date"]
+    comment = data["comment"]
+    files = data["files"]
+    insert_query = 'INSERT INTO sheets (name_one, lastname_one, name_two, lastname_two, event_location, event_date, comment, files) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);'
+    cursor.execute(insert_query, (name_one, lastname_one, name_two, lastname_two, event_location, event_date,))
     con.commit()
     con.close()
