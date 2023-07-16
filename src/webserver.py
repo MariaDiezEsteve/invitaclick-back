@@ -5,10 +5,14 @@ from flask_cors import CORS
 from src.get_query import *
 from src.create_query import *
 
+from flask import Flask
+from flask_cors import CORS
+
+
 
 def create_app(database):
     app = Flask(__name__)
-    CORS(app)
+    cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:8080"}})
 
     @app.route('/', methods=['GET'])
     def hello_world():
@@ -51,16 +55,16 @@ def create_app(database):
             data = request.get_json()
             return create_review(data)
 
-    #return all the reviews
+    #return all the reviews, route: get all reviews in the database
     @app.route('/sheets', methods=['GET'])
     def get_all_sheets():
-        if request.method == 'GET': # route: get all reviews in the database
             return get_sheets()
-        elif request.method == 'POST': # route: create a new review in the database
-            data = request.get_json()
-            return create_sheet(data)
 
-
+    # route: create a new review in the database   
+    @app.route('/sheets/create', methods=['POST'])
+    def created_sheets():
+        data = request.get_json()
+        return create_sheets(data)
 
 
     return app

@@ -74,7 +74,7 @@ def create_guest(data):
     return "User created successfully"
 
 # function to create a sheet from the database
-def create_sheet(data):
+def create_sheets(data):
     con = db.connectdb()
     cursor = con.cursor()
     name_one = data["name_one"]
@@ -85,7 +85,7 @@ def create_sheet(data):
     event_date = data["event_date"]
     comment = data["comment"]
     files = data["files"]
-    insert_query = 'INSERT INTO sheets (name_one, lastname_one, name_two, lastname_two, event_location, event_date, comment, files) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);'
-    cursor.execute(insert_query, (name_one, lastname_one, name_two, lastname_two, event_location, event_date,))
+    insert_query = 'INSERT INTO sheet (name_one, lastname_one, name_two, lastname_two, event_location, event_date, comment, files) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);'
+    cursor.execute(insert_query, (name_one, lastname_one, name_two, lastname_two, event_location, event_date,comment, files,))
     con.commit()
     con.close()
