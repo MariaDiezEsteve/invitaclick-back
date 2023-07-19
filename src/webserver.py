@@ -12,13 +12,23 @@ from flask_cors import CORS
 
 def create_app(database):
     app = Flask(__name__)
-    cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:8080"}})
+    CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
+
+    #Could be the solution to solve the problem with CORS
+    @app.after_request
+    def add_cors_headers(response):
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'    
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+
 
     @app.route('/', methods=['GET'])
     def hello_world():
         return 'Hello World!'
 
 #ALL DATABASE ENITIES
+    #return all the products
     @app.route('/products', methods=['GET', 'POST'])
     def get_all_products():
         if request.method == 'GET': # route: get all products in the database 
@@ -66,6 +76,11 @@ def create_app(database):
         data = request.get_json()
         return create_sheets(data)
 
+    # route: create a new contact in the database   
+    @app.route('/contact/create', methods=['POST'])
+    def created_new_contact():
+        data = request.get_json()
+        return create_contact(data)
 
     return app
 
