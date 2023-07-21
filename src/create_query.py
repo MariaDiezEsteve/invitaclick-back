@@ -38,6 +38,7 @@ def create_product(data):
 
 # function to create a user from the data form buy
 def create_user(data, key):
+    print("esto es data user", data)
     con = db.connectdb()
     cursor = con.cursor()
     name = data["name"]
@@ -47,13 +48,16 @@ def create_user(data, key):
     payloads = {
         "contraseña": password
     }
+    print("payloads", payloads)
 
     password_encoded = jwt.encode(payloads, key, algorithm="HS256")
-    data = request.get_json()
-    insert_query = 'INSERT INTO users (name, email, password ) VALUES (%s, %s, %s);'
-    cursor.execute(insert_query, (name, email, password_encoded))
+    print("password_encoded", password_encoded)
+    cursor.execute('INSERT INTO users (name, email, password) VALUES (%s, %s, %s)',(name, email, password_encoded))
+
     con.commit()
     con.close()
+
+    print('user added successfully')
 
     return "User created successfully"
 

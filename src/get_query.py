@@ -1,5 +1,6 @@
 # Import the file database.py
 import src.database as db
+from flask import request, jsonify
 
 database_path = ""
 
@@ -67,6 +68,21 @@ def get_users():
     users_col_Names = [column[0] for column in cursor.description]
     for product in myusers:
         users_array.append(dict(zip(users_col_Names, product)))
+
+def get_anuser(id_user):
+    con = db.connectdb()
+    cursor = con.cursor()
+    cursor.execute('SELECT * FROM users WHERE id = %s', (id_user,))
+    data_user = cursor.fetchone()
+    
+    if data_user:
+        data = {'id': data_user[0], 'lname': data_user[1], 'email': data_user[2], 'paswword': data_user[3]}
+        con.close()
+        print(data)
+        return jsonify(data)
+    else:
+        return 'The user was not found' 
+
 
 # function to get all the sheets from the database, returns them in an array
 def get_sheets():

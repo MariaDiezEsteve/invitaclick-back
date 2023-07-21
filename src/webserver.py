@@ -4,6 +4,7 @@ from flask_cors import CORS
 
 from src.get_query import *
 from src.create_query import *
+from src.login_user import *
 
 from flask import Flask
 from flask_cors import CORS
@@ -37,15 +38,29 @@ def create_app(database):
             data = request.get_json()
             return create_product(data)
         
-    #return all the users
-    @app.route('/users', methods=['GET', 'POST'])
+    #return all the users # route: get all users in the database 
+    @app.route('/users', methods=['GET'])
     def get_all_users():
-        if request.method == 'GET': # route: get all users in the database 
             return get_users()
-        elif request.method == 'POST': # route: create a new user in the database 
-            key = secret_key()
-            data = request.get_json()   
-            return create_user(data, key)
+    # route: create a new user in the database 
+    @app.route('/users/create', methods=['POST'])
+    def create_user_data():
+        key = secret_key()
+        data = request.get_json()   
+        return create_user(data, key)
+    
+    #route that returns an user
+    @app.route("/users/<int:iduser>", methods=['GET'])
+    def get_an_user(iduser):
+        return get_anuser(iduser)
+    
+        # route that returns the data which is include in the form login
+    @app.route("/login", methods=["POST"])
+    def login():
+        key = secret_key()
+        data = request.get_json()
+        return login_user(data,key)
+
 
     #return all the guests
     @app.route('/guests', methods=['GET', 'POST'])
