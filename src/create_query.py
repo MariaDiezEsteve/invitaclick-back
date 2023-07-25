@@ -133,3 +133,5 @@ def create_contact(data):
     con.commit()
     con.close()
     return "Contat form created successfully"
+
+

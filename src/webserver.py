@@ -59,8 +59,9 @@ def create_app(database):
     def login():
         key = secret_key()
         data = request.get_json()
-        return login_user(data,key)
-
+        return login_user(data, key)
+           
+    #route that returns the data which is include in the form login
 
     #return all the guests
     @app.route('/guests', methods=['GET', 'POST'])
